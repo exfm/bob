@@ -219,8 +219,8 @@ app.all('/', function(req, res){
     console.log('Got ping in app');
     console.log('Body: '+req.param('body'));
     var p = req.param('body', 'nothing').split(' '),
-        cmd = p[0],
-        extras = p.splice(1);
+        cmd = p[1],
+        extras = p.splice(2);
 
     return res.send(runCommand(cmd, req.param('from'), extras));
 });
