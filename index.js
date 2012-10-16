@@ -238,6 +238,10 @@ command('addrepo', 'Add a new repo to start watching.', function(from, args){
     });
 });
 
+command('repos', 'List all repos bob is watchin', function(){
+    this.send('Watching repos: ' + JSON.stringify(nconf.get('repos')));
+});
+
 command('echo', 'Just spit it back', function(from, args){
     return this.send(args.join(" "));
 });
