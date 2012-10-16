@@ -214,6 +214,7 @@ function runCommand(cmd, from, args){
 }
 
 app.all('/', function(req, res){
+    console.log('Got ping in app');
     var p = req.param('body', 'nothing').split(' '),
         cmd = p[0],
         extras = p.splice(1);
