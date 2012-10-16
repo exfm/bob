@@ -213,7 +213,7 @@ command('listening', 'What is someone listening to?', function(from, args){
             console.log(res.body);
             if(res.body.user.now_playing){
                 song = res.body.user.now_playing;
-                self.send(song.title + ' by ' + song.artist + 'http://ex.fm/song/' + song.id);
+                self.send("\u266D" + args[0] + ': ' + song.title + ' by ' + song.artist + ' http://ex.fm/song/' + song.id);
             }
         });
 });
