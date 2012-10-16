@@ -192,7 +192,9 @@ command('deploy', 'Deploy something somewhere.  repo host', function(from, args)
             var cmd = 'if [ ! -d "'+args[0]+'" ]; then git clone git://github.com/'+nconf.get('github_username')+'/'+args[0]+'.git;fi;cd ' + args[0] + '; git pull';
             console.log(cmd);
             client.exec(cmd, function(){
-                client.exec("npm install; forever stop index.js; forever start -l /home/ubuntu/apps/"+args[0]+".log index.js", function(){
+                cmd = "npm install; forever stop index.js; forever start -a -l /home/ubuntu/apps/"+args[0]+".log index.js";
+                console.log(cmd);
+                client.exec(cmd, function(){
                     self.send("deployed " + args[0] + " to " + args[1] + '! Logging at /home/ubuntu/apps/'+args[0]+'.log');
                     client.close();
                 });
@@ -215,6 +217,7 @@ function runCommand(cmd, from, args){
 
 app.all('/', function(req, res){
     console.log('Got ping in app');
+    console.log('Body: '+req.param('body'));
     var p = req.param('body', 'nothing').split(' '),
         cmd = p[0],
         extras = p.splice(1);
