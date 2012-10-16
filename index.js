@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 "use strict";
 
 var gith = require('gith'),
@@ -180,8 +182,27 @@ command('list', 'List all commands', function(from, args){
     return this.send(msg.join("\n"));
 });
 
-command('deploy', 'Deploy something somewhere.  repo host', function(from, args){
+var createSSH = require('ssh-client');
 
+command('deploy', 'Deploy something somewhere.  repo host', function(from, args){
+    var self = this,
+        client = createSSH('ubuntu', args[1], function(){
+            self.send("deploying " + args[0] + " to " + args[1] + '...');
+        client.cd('~/apps/', function(){
+            var cmd = 'if [ ! -d "'+args[0]+'" ]; then git clone git://github.com/'+nconf.get('github_username')+'/'+args[0]+'.git;fi;cd ' + args[0] + '; git pull';
+            console.log(cmd);
+            client.exec(cmd, function(){
+                client.exec("npm install; forever stop index.js; forever start -l /home/ubuntu/apps/"+args[0]+".log index.js", function(){
+                    self.send("deployed " + args[0] + " to " + args[1] + '! Logging at /home/ubuntu/apps/'+args[0]+'.log');
+                    client.close();
+                });
+            });
+        });
+    });
+});
+
+command('echo', 'Just spit it back', function(from, args){
+    return this.send(args.join(" "));
 });
 
 function runCommand(cmd, from, args){
