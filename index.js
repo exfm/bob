@@ -203,6 +203,21 @@ command('deploy', 'Deploy something somewhere.  repo host', function(from, args)
     });
 });
 
+
+command('listening', 'What is someone listening to?', function(from, args){
+    var self = this,
+        song;
+    request
+        .get('http://ex.fm/api/v3/user/' + args[0])
+        .end(function (res){
+            console.log(res.body);
+            if(res.body.user.now_playing){
+                song = res.body.user.now_playing;
+                self.send(song.title + ' by ' + song.artist + 'http://ex.fm/song/' + song.id);
+            }
+        });
+});
+
 command('echo', 'Just spit it back', function(from, args){
     return this.send(args.join(" "));
 });
