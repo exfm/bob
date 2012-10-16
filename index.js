@@ -7,7 +7,8 @@ var gith = require('gith'),
     nconf = require('nconf'),
     when = require('when'),
     sequence = require('sequence'),
-    bouncy = require('bouncy');
+    bouncy = require('bouncy'),
+    fs = require('fs');
 
 
 nconf.argv()
@@ -216,6 +217,21 @@ command('listening', 'What is someone listening to?', function(from, args){
                 self.send("\u266D" + args[0] + ': ' + song.title + ' by ' + song.artist + ' http://ex.fm/song/' + song.id);
             }
         });
+});
+
+command('addrepo', 'Add a new repo to start watching.', function(from, args){
+    var self = this,
+        repoName = args[0],
+        p = nconf.get('github_username') + "/" + repoName,
+        config;
+    fs.readFile('config.json', 'utf-8', function(err, data){
+        config = JSON.parse(data);
+        config.repos.push(p);
+        nconf.set('repos', config.repos);
+        fs.writeFile('config.json', JSON.stringify(config, null, 4), 'utf-8', function(){
+            self.send('Now watching repos: ' + JSON.stringify(nconf.get('repos')));
+        });
+    });
 });
 
 command('echo', 'Just spit it back', function(from, args){
