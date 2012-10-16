@@ -112,6 +112,10 @@ init(function(){
     REPOS['exfm/albumart'].gith.on('all', function(payload){
         console.log('Got payload ', payload);
     });
+
+    REPOS['exfm/bob'].gith.on('all', function(payload){
+        console.log('Got BOB payload ', payload);
+    });
 });
 
 gith = gith.create(10000);
