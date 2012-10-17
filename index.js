@@ -212,15 +212,24 @@ command('deploy', 'Deploy something somewhere.  repo host', function(from, args)
 command('listening', 'What is someone listening to?', function(from, args){
     var self = this,
         song;
-    request
-        .get('http://ex.fm/api/v3/user/' + args[0])
-        .end(function (res){
-            console.log(res.body);
-            if(res.body.user.now_playing){
-                song = res.body.user.now_playing;
-                self.send("\u266D" + args[0] + ': ' + song.title + ' by ' + song.artist + ' http://ex.fm/song/' + song.id);
-            }
-        });
+    if(args[0]){
+        request
+            .get('http://ex.fm/api/v3/user/' + args[0])
+            .end(function (res){
+                console.log(res.body);
+                if(res.body.user.now_playing){
+                    song = res.body.user.now_playing;
+                    self.send("\u266D" + args[0] + ': ' + song.title + ' by ' + song.artist + ' http://ex.fm/song/' + song.id);
+                }
+            });
+    }
+    else{
+        request
+            .get('http://ex.fm/api/v3/whos-listening')
+            .end(function (res){
+                self.send("\u266D Listening: " + res.body.total);
+            });
+    }
 });
 
 command('addrepo', 'Add a new repo to start watching.', function(from, args){
