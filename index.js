@@ -214,7 +214,7 @@ command('order', 'Order something for lunch', function(from, args){
     this.send('Got you down for ' + args.join(' '));
 });
 
-command('list orders', 'Show all lunch orders', function(from, args){
+command('listorders', 'Show all lunch orders', function(from, args){
     var msg = [
         'What people want for lunch:'
     ];
