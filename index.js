@@ -209,7 +209,7 @@ command('deploy', 'Deploy something somewhere.  repo host', function(from, args)
 });
 
 
-command('listening', 'What is someone listening to?', function(from, args){
+command('np', 'What is someone listening to?', function(from, args){
     var self = this,
         song;
     if(args[0]){
