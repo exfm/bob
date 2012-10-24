@@ -286,7 +286,7 @@ app.all('/', function(req, res){
         cmd = p[2],
         extras = p.splice(3);
 
-    return res.send(runCommand(cmd, req.param('from'), extras));
+    return res.send(runCommand(cmd, p[0].replace('[', '').replace(']', ''), extras));
 });
 
 http.createServer(app).listen(app.get('port'), function(){
