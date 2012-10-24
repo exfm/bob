@@ -208,6 +208,22 @@ command('deploy', 'Deploy something somewhere.  repo host', function(from, args)
     });
 });
 
+var orders = {};
+command('order', 'Order something for lunch', function(from, args){
+    orders[from] = args.join(' ');
+    this.send('Got you down for ' + args.join(' '));
+});
+
+command('list orders', 'Show all lunch orders', function(from, args){
+    var msg = [
+        'What people want for lunch:'
+    ];
+    Object.keys(orders).forEach(function(name){
+        msg.push(name + ' : ' + orders[name]);
+    });
+    this.send(msg.join('\n'));
+});
+
 
 command('np', 'What is someone listening to?', function(from, args){
     var self = this,
