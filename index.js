@@ -248,6 +248,16 @@ command('np', 'What is someone listening to?', function(from, args){
     }
 });
 
+command('latency', 'Check production load balancer latency', function(from, args){
+    var self = this,
+        song;
+    request
+        .get(nconfig.get('stormwatch_url'))
+        .end(function (res){
+            self.send("Current prod ELB latency: " + res.body.latency);
+        });
+});
+
 command('addrepo', 'Add a new repo to start watching.', function(from, args){
     var self = this,
         repoName = args[0],
